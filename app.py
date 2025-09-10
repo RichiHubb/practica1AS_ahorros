@@ -88,11 +88,11 @@ def iniciarSesion():
 
     cursor = con.cursor(dictionary=True)
     sql    = """
-    SELECT Id_Usuario
+    SELECT id
     FROM usuarios
 
-    WHERE Nombre_Usuario = %s
-    AND Contrasena = %s
+    WHERE nombre = %s
+    AND contrasena = %s
     """
     val    = (usuario, contrasena)
 
