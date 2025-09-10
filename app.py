@@ -474,10 +474,10 @@ def guardarEtiqueta():
     if not con.is_connected():
         con.reconnect()
 
-    nombre = request.form["nombre"]
+    nombreEtiqueta = request.form["nombreEtiqueta"]
     
     cursor = con.cursor()
-    sql = "INSERT INTO etiquetas (nombreEtiqueta,) VALUES (%s,)"
+    sql = "INSERT INTO etiquetas (nombreEtiqueta) VALUES (%s,)"
     val = (nombre,)
     cursor.execute(sql, val)
     con.commit()
