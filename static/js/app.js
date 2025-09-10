@@ -29,6 +29,10 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/cuentas",
         controller: "cuentasCtrl"
     })
+    .when("/cuentas", {
+    templateUrl: "/notasFinancieras",
+    controller: "notasfinancierasCtrl"
+    })
     .otherwise({
         redirectTo: "/"
     })
@@ -220,4 +224,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
