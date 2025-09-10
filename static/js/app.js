@@ -206,21 +206,7 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
     })
 })
 
-$(document).on("click", ".btn-eliminar", function () {
-    //id
-    const idNota = $(this).data("id");
-    //alerta de eliminación
-    if (!confirm("¿Estás seguro de eliminar esta nota?, su eliminación sera permanente")) return;
-    //eliminación
-    $.post("/nota/eliminar", { idNota: idNota }, function (respuesta) {
-        if (respuesta.success) {
-            alert("Nota eliminada correctamente");
-            buscarNotasFinancieras(); // refresca el tbody
-        } else {
-            alert("Error al eliminar: " + (respuesta.error || ""));
-        }
-    });
-});
+
 
 
 app.controller("cuentasCtrl", function ($scope, $http) {
@@ -274,6 +260,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
