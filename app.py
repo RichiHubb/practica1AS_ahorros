@@ -84,6 +84,20 @@ def pusherCuentas():
     
     pusher_client.trigger("canalCuentas", "eventoCuentas", {"message": "Hola Mundo!"})
     return make_response(jsonify({}))
+
+def pusherMovimientos():
+    import pusher
+    
+    pusher_client = pusher.Pusher(
+      app_id='2046048',
+      key='bc1c723155afce8dd187',
+      secret='57fd29b7d864a84bf88c',
+      cluster='us2',
+      ssl=True
+    )
+    
+    pusher_client.trigger("canalMovimientos", "eventoMovimientos", {"message": "Nuevo movimiento!"})
+    return make_response(jsonify({}))
     
 
 @app.route("/")
@@ -555,6 +569,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
     
     return make_response(jsonify({}))
+
 
 
 
