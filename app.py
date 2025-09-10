@@ -85,6 +85,19 @@ def pusherCuentas():
     pusher_client.trigger("canalCuentas", "eventoCuentas", {"message": "Hola Mundo!"})
     return make_response(jsonify({}))
 
+def pusherMovimientos():
+    import pusher
+    pusher_client = pusher.Pusher(
+      app_id='2046048',
+      key='bc1c723155afce8dd187',
+      secret='57fd29b7d864a84bf88c',
+      cluster='us2',
+      ssl=True
+    )
+    pusher_client.trigger("canalMovimientos", "eventoMovimientos", {"message": "Nuevo movimiento!"})
+    return make_response(jsonify({}))
+
+
 @app.route("/")
 def index():
     if not con.is_connected():
@@ -155,6 +168,27 @@ def tbodyProductos():
 
     cursor.execute(sql)
     registros = cursor.fetchall()
+
+    @app.route("/movimientos")
+    def movimientos():
+    return render_template("movimientos.html")
+
+    @app.route("/tbodyMovimientos")
+    def tbodyMovimientos():
+    if not con.is_connected():
+        con.reconnect()
+    cursor = con.cursor(dictionary=True)
+    sql = """
+    SELECT idMovimiento, monto, fechaHora
+    FROM movimientos
+    ORDER BY fechaHora DESC
+    """
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+    con.close()
+    return render_template("tbodyMovimientos.html", movimientos=registros)
+
+
 
     # Si manejas fechas y horas
     """
@@ -486,6 +520,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
 
     return make_response(jsonify({}))
+
 
 
 
