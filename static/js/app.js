@@ -21,6 +21,10 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/productos",
         controller: "productosCtrl"
     })
+    .when("/etiquetas", {
+        templateUrl: "/etiquetas",
+        controller: "etiquetasCtrl"
+    })
     .when("/decoraciones", {
         templateUrl: "/decoraciones",
         controller: "decoracionesCtrl"
@@ -241,6 +245,36 @@ app.controller("cuentasCtrl", function ($scope, $http) {
     })
 })
 
+app.controller("etiquetasCtrl", function ($scope, $http) {
+    function buscarEtiquetas() {
+        $.get("/tbodyEtiquetas", function (trsHTML) {
+            $("#tbodyEtiquetas").html(trsHTML)
+        })
+    }
+
+    buscarEtiquetas()
+    
+     // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = false;
+
+    var pusher = new Pusher('bc1c723155afce8dd187', {
+      cluster: 'us2'
+    });
+
+     var channel = pusher.subscribe("canalEtiquetas")
+    channel.bind("eventoEtiquetas", function(data) {
+        buscarEtiquetas()
+    })
+    
+    $(document).on("submit", "#frmEtiqueta", function (event) {
+        event.preventDefault()
+
+        $.post("/etiqueta", {
+            id: "",
+            nombre: $("#txtNombre").val(),
+        })
+    })
+})
 
 
 const DateTime = luxon.DateTime
@@ -260,6 +294,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
