@@ -201,7 +201,7 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
         $.post("/notafinanciera", {
             idNota: "",
             titulo: $("#txtTitulo").val(),
-            descripcion: $("#txtDescripcion").val(),
+            descripcion: $("#txtDesc").val(),
         })
     })
 })
@@ -257,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
