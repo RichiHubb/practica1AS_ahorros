@@ -1,0 +1,26 @@
+<form id="frmMovimiento" method="post">
+    <div class="mb-1">
+        <label>Monto</label>
+        <input type="text" class="form-control" id="txtMonto" name="txtMonto">
+    </div>
+    <div class="mb-1">
+        <label>Fecha y Hora</label>
+        <input type="datetime-local" class="form-control" id="txtFechaHora" name="txtFechaHora">
+    </div>
+    <div class="mb-1 text-end">
+        <button class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead class="table-active">
+            <tr>
+                <th>ID</th>
+                <th>Monto</th>
+                <th>Fecha y Hora</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyMovimientos"></tbody>
+    </table>
+</div>
