@@ -239,7 +239,7 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
             descripcion: $("#txtDesc").val(),
         })
     })
-})
+});
 
 
 
@@ -325,6 +325,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
