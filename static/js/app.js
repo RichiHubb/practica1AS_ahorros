@@ -189,8 +189,8 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
       cluster: 'us2'
     });
 
-    var channel = pusher.subscribe("canalProductos")
-    channel.bind("eventoProductos", function(data) {
+    var channel = pusher.subscribe("canalNotasFinancieras")
+    channel.bind("eventoNotasFinancieras", function(data) {
         // alert(JSON.stringify(data))
         buscarNotasFinancieras()
     })
@@ -257,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
