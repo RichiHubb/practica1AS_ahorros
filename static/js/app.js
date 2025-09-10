@@ -189,57 +189,22 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
-    var pusher = new Pusher('bc1c723155afce8dd187', {
-      cluster: 'us2'
-    });
-
-    var channel = pusher.subscribe("canalNotasFinancieras")
+    var pusher = new Pusher('bc1c723155afce8dd187', { cluster: 'us2' });
+    var channel = pusher.subscribe("canalNotasFinancieras");
     channel.bind("eventoNotasFinancieras", function(data) {
-        // alert(JSON.stringify(data))
         buscarNotasFinancieras()
-    })
+    });
     
     $(document).on("submit", "#frmNotaFinanciera", function (event) {
         event.preventDefault()
-
         $.post("/notafinanciera", {
             idNota: "",
             titulo: $("#txtTitulo").val(),
             descripcion: $("#txtDesc").val(),
         })
-    })
-app.controller("notasfinancierasCtrl", function ($scope, $http) {
-    function buscarNotasFinancieras() {
-        $.get("/tbodyNotasFinancieras", function (trsHTML) {
-            $("#tbodyNotasFinancieras").html(trsHTML)
-        })
-    }
-
-    buscarNotasFinancieras()
-    
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher('bc1c723155afce8dd187', {
-      cluster: 'us2'
     });
-
-    var channel = pusher.subscribe("canalNotasFinancieras")
-    channel.bind("eventoNotasFinancieras", function(data) {
-        // alert(JSON.stringify(data))
-        buscarNotasFinancieras()
-    })
-    
-    $(document).on("submit", "#frmNotaFinanciera", function (event) {
-        event.preventDefault()
-
-        $.post("/notafinanciera", {
-            idNota: "",
-            titulo: $("#txtTitulo").val(),
-            descripcion: $("#txtDesc").val(),
-        })
-    })
 });
+
 
 
 
@@ -325,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
