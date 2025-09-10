@@ -442,6 +442,69 @@ def guardarNotaFinanciera():
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# INICIO SECCION MOVIMIENTOS
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@app.route("/movimientos")
+def viewMovimientos():
+    return render_template("movimientos.html")
+
+@app.route("/tbodyMovimientos")
+def tbodyMovimientos():
+    if not con.is_connected():
+        con.reconnect()
+
+    cursor = con.cursor(dictionary=True)
+    sql = """
+    SELECT idMovimiento,
+           monto,
+           fechaHora
+    FROM movimientos
+    ORDER BY fechaHora DESC
+    """
+
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+
+    for registro in registros:
+        fecha_hora = registro["fechaHora"]
+        if fecha_hora:
+            registro["fechaHora"] = fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            registro["fechaHora"] = ""
+
+    con.close()
+    return render_template("tbodyMovimientos.html", movimientos=registros)
+
+@app.route("/movimiento", methods=["POST"])
+def guardarMovimiento():
+    if not con.is_connected():
+        con.reconnect()
+
+    monto = request.form["monto"]
+    fechaHora = datetime.datetime.now(pytz.timezone("America/Matamoros"))
+
+    cursor = con.cursor()
+    sql = """
+        INSERT INTO movimientos (monto, fechaHora)
+        VALUES (%s, %s)
+    """
+    val = (monto, fechaHora)
+
+    cursor.execute(sql, val)
+    con.commit()
+    con.close()
+
+    pusherMovimientos()
+
+    return make_response(jsonify({}))
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# FIN SECCION MOVIMIENTOS
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Etiquetas
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -495,6 +558,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
 
     return make_response(jsonify({}))
+
 
 
 
