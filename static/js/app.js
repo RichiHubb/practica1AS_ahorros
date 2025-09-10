@@ -21,17 +21,14 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/productos",
         controller: "productosCtrl"
     })
-
-
-
     .when("/decoraciones", {
         templateUrl: "/decoraciones",
         controller: "decoracionesCtrl"
     })
-
-
-
-
+    .when("/cuentas", {
+        templateUrl: "/cuentas",
+        controller: "cuentasCtrl"
+    })
     .otherwise({
         redirectTo: "/"
     })
@@ -168,6 +165,38 @@ app.controller("decoracionesCtrl", function ($scope, $http) {
             nombre: $("#txtNombre").val(),
             precio: $("#txtPrecio").val(),
             existencias: $("#txtExistencias").val(),
+        })
+    })
+})
+
+app.controller("cuentasCtrl", function ($scope, $http) {
+    function buscarCuentas() {
+        $.get("/tbodyCuentas", function (trsHTML) {
+            $("#tbodyCuentas").html(trsHTML)
+        })
+    }
+
+    buscarCuentas()
+    
+     // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = false;
+
+    var pusher = new Pusher('bc1c723155afce8dd187', {
+      cluster: 'us2'
+    });
+
+     var channel = pusher.subscribe("canalCuentas")
+    channel.bind("eventoCuentas", function(data) {
+        buscarCuentas()
+    })
+    
+    $(document).on("submit", "#frmCuenta", function (event) {
+        event.preventDefault()
+
+        $.post("/cuenta", {
+            id: "",
+            nombre: $("#txtNombre").val(),
+            balance: $("#txtBalance").val()
         })
     })
 })

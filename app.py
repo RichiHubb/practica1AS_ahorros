@@ -42,6 +42,21 @@ def pusherProductos():
     pusher_client.trigger("canalProductos", "eventoProductos", {"message": "Hola Mundo!"})
     return make_response(jsonify({}))
 
+def pusherCuentas():
+    import pusher
+    
+    pusher_client = pusher.Pusher(
+      app_id='2046048',
+      key='bc1c723155afce8dd187',
+      secret='57fd29b7d864a84bf88c',
+      cluster='us2',
+      ssl=True
+    )
+
+    
+    pusher_client.trigger("canalCuentas", "eventoCuentas", {"message": "Hola Mundo!"})
+    return make_response(jsonify({}))
+
 @app.route("/")
 def index():
     if not con.is_connected():
@@ -123,6 +138,7 @@ def tbodyProductos():
         registro["Hora"]       = fecha_hora.strftime("%H:%M:%S")
     """
 
+    con.close()
     return render_template("tbodyProductos.html", productos=registros)
 
 @app.route("/productos/ingredientes/<int:id>")
@@ -141,6 +157,7 @@ def productosIngredientes(id):
 
     cursor.execute(sql, (id, ))
     registros = cursor.fetchall()
+    con.close()
 
     return render_template("modal.html", productosIngredientes=registros)
 
@@ -276,5 +293,59 @@ def eliminarProducto():
     con.close()
 
     return make_response(jsonify({}))
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# INICIO SECCION CUENTAS
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+@app.route("/cuentas")
+def viewCuentas():
+    return render_template("cuentas.html")
 
+@app.route("/tbodyCuentas")
+def tbodyCuentas():
+    if not con.is_connected():
+        con.reconnect()
 
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT id_cuenta,
+           nombre,
+           balance
+
+    FROM cuentas
+
+    ORDER BY id_cuenta DESC
+    """
+
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+    con.close()
+
+    return render_template("tbodyCuentas.html", cuentas=registros)
+
+@app.route("/cuenta", methods=["POST"])
+def guardarCuenta():
+    if not con.is_connected():
+        con.reconnect()
+
+    nombre      = request.form["nombre"]
+    balance      = request.form["balance"]
+    
+    cursor = con.cursor()
+
+    sql = """
+        INSERT INTO cuentas (nombre, balance)
+        VALUES    (%s,          %s)
+        """
+    val = (nombre, balance)
+    
+    cursor.execute(sql, val)
+    con.commit()
+    con.close()
+
+    pusherCuentas()
+    
+    return make_response(jsonify({}))
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# FIN SECCION CUENTAS
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
