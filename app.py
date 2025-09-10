@@ -37,9 +37,23 @@ def pusherProductos():
       cluster='us2',
       ssl=True
     )
-
     
     pusher_client.trigger("canalProductos", "eventoProductos", {"message": "Hola Mundo!"})
+    return make_response(jsonify({}))
+
+def pusherEtiquetas():
+    import pusher
+    
+    pusher_client = pusher.Pusher(
+      app_id='2046048',
+      key='bc1c723155afce8dd187',
+      secret='57fd29b7d864a84bf88c',
+      cluster='us2',
+      ssl=True
+    )
+
+    
+    pusher_client.trigger("canalEtiquetas", "eventoEtiquetas", {"message": "Hola World!"})
     return make_response(jsonify({}))
 
 def pusherNotasFinancieras():
@@ -423,6 +437,57 @@ def guardarNotaFinanciera():
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Etiquetas
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@app.route("/etiquetas")
+def viewEtiquetas():
+    return render_template("etiquetas.html")
+
+@app.route("/tbodyEtiquetas")
+def tbodyEtiquetas():
+    if not con.is_connected():
+        con.reconnect()
+
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT idEtiqueta,
+           nombreEtiqueta
+
+    FROM etiquetas
+
+    ORDER BY idEtiqueta DESC
+    """
+
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+    con.close()
+
+    return render_template("tbodyEtiquetas.html", etiquetas=registros)
+
+@app.route("/etiqueta", methods=["POST"])
+def guardarEtiqueta():
+    if not con.is_connected():
+        con.reconnect()
+
+    nombre      = request.form["nombre"]
+    
+    cursor = con.cursor()
+
+    sql = """
+        INSERT INTO etiquetas (nombre)
+        VALUES    (%s,)
+        """
+    val = (nombre,)
+    
+    cursor.execute(sql, val)
+    con.commit()
+    con.close()
+
+    pusherEtiquetas()
+    
+    return make_response(jsonify({}))
 
 
 
