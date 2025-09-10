@@ -1,7 +1,7 @@
 {% for mov in movimientos %}
 <tr>
-    <td>{{ mov[0] }}</td>
-    <td>{{ mov[1] }}</td>
-    <td>{{ mov[2] }}</td>
+    <td>{{ mov.idMovimiento }}</td>
+    <td>{{ mov.monto }}</td>
+    <td>{{ mov.fechaHora }}</td>
 </tr>
 {% endfor %}
