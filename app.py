@@ -390,10 +390,10 @@ def tbodyNotasFinancieras():
    
     for registro in registros:
         fecha_hora = registro["fechaCreacion"]
-
+    if fecha_hora:
         registro["fechaCreacion"] = fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
-
-    
+    else:
+        registro["fechaCreacion"] = ""
 
     con.close()
     return render_template("tbodyNotasFinancieras.html", notas=registros)
@@ -422,6 +422,7 @@ def guardarNotaFinanciera():
 # FIN SECCION CUENTAS
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
