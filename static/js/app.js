@@ -182,17 +182,17 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
 
     buscarNotasFinancieras()
     
-     // Enable pusher logging - don't include this in production
+    // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
     var pusher = new Pusher('bc1c723155afce8dd187', {
       cluster: 'us2'
     });
 
-     var channel = pusher.subscribe("canalProductos")
+    var channel = pusher.subscribe("canalProductos")
     channel.bind("eventoProductos", function(data) {
         // alert(JSON.stringify(data))
-        buscarNotasFinancieros()
+        buscarNotasFinancieras()
     })
     
     $(document).on("submit", "#frmNotaFinanciera", function (event) {
@@ -202,18 +202,6 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
             idNota: "",
             titulo: $("#txtTitulo").val(),
             descripcion: $("#txtDescripcion").val(),
-        })
-    })
-
-    $(document).on("click", ".btn-ingredientes", function (event) {
-        const id = $(this).data("id")
-
-        $.get(`/productos/ingredientes/${id}`, function (html) {
-            modal(html, "Ingredientes", [
-                {html: "Aceptar", class: "btn btn-secondary", fun: function (event) {
-                    closeModal()
-                }}
-            ])
         })
     })
 })
@@ -269,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
