@@ -478,7 +478,7 @@ def guardarEtiqueta():
     
     cursor = con.cursor()
     sql = "INSERT INTO etiquetas (nombreEtiqueta) VALUES (%s,)"
-    val = (nombre,)
+    val = (nombreEtiqueta,)
     cursor.execute(sql, val)
     con.commit()
     con.close()
@@ -486,6 +486,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
 
     return make_response(jsonify({}))
+
 
 
 
