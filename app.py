@@ -348,4 +348,42 @@ def guardarCuenta():
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # FIN SECCION CUENTAS
+
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+@app.route("/notasFinancieras")
+def productos():
+    return render_template("notasFinancieras.html")
+
+@app.route("/tbodyNotasFinancieras")
+def tbodyNotasFinancieras():
+    if not con.is_connected():
+        con.reconnect()
+
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT idNota,
+           titulo,
+           descripcion,
+           fechaCreacion
+
+    FROM notasfinancieras
+
+    ORDER BY idNota DESC
+
+    LIMIT 10 OFFSET 0
+    """
+
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+
+    # Si manejas fechas y horas
+   
+    for registro in registros:
+        fecha_hora = registro["fechaCreacion"]
+
+        registro["fechaCreacion"] = fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
+
+    
+
+    con.close()
+    return render_template("tbodyNotasFinancieras.html", notas=registros)
