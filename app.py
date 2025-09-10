@@ -474,23 +474,19 @@ def guardarEtiqueta():
     if not con.is_connected():
         con.reconnect()
 
-    nombre      = request.form["nombre"]
+    nombre = request.form["nombre"]
     
     cursor = con.cursor()
-
-    sql = """
-        INSERT INTO etiquetas (nombre)
-        VALUES    (%s,)
-        """
+    sql = "INSERT INTO etiquetas (nombreEtiqueta,) VALUES (%s,)"
     val = (nombre,)
-    
     cursor.execute(sql, val)
     con.commit()
     con.close()
 
     pusherEtiquetas()
-    
+
     return make_response(jsonify({}))
+
 
 
 
