@@ -33,6 +33,10 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/cuentas",
         controller: "cuentasCtrl"
     })
+    .when("/movimientos", {
+    templateUrl: "/movimientos",
+    controller: "movimientosCtrl"
+    })
     .when("/notasFinancieras", {
     templateUrl: "/notasFinancieras",
     controller: "notasfinancierasCtrl"
@@ -288,6 +292,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
