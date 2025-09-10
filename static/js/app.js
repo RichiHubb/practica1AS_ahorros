@@ -226,41 +226,20 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
 
     var channel = pusher.subscribe("canalNotasFinancieras")
     channel.bind("eventoNotasFinancieras", function(data) {
+        // alert(JSON.stringify(data))
         buscarNotasFinancieras()
     })
     
     $(document).on("submit", "#frmNotaFinanciera", function (event) {
         event.preventDefault()
+
         $.post("/notafinanciera", {
             idNota: "",
             titulo: $("#txtTitulo").val(),
             descripcion: $("#txtDesc").val(),
         })
     })
-
-    // ---------------------------
-    // NUEVA FUNCIÓN DE ELIMINACIÓN
-    // ---------------------------
-    $(document).on("click", ".btn-eliminar-nota", function () {
-        const idNota = $(this).data("id")  // asumimos que el botón tiene data-id="123"
-        
-        if (confirm("¿Seguro que quieres eliminar esta nota?")) {
-            $.ajax({
-                url: `/notafinanciera/${idNota}`,
-                type: "DELETE",
-                success: function(respuesta) {
-                    alert("Nota eliminada")
-                    buscarNotasFinancieras() // refresca la tabla
-                },
-                error: function(err) {
-                    alert("Error al eliminar la nota")
-                    console.error(err)
-                }
-            })
-        }
-    })
 })
-
 
 
 
