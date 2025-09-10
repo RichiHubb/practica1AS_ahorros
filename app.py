@@ -347,7 +347,7 @@ def guardarCuenta():
     return make_response(jsonify({}))
 
 @app.route("/notasFinancieras")
-def productos():
+def notasfinancieras():
     return render_template("notasFinancieras.html")
 
 @app.route("/tbodyNotasFinancieras")
@@ -388,5 +388,6 @@ def tbodyNotasFinancieras():
 # FIN SECCION CUENTAS
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
