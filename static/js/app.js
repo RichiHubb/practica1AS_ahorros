@@ -205,10 +205,6 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
     });
 });
 
-
-
-
-
 app.controller("cuentasCtrl", function ($scope, $http) {
     function buscarCuentas() {
         $.get("/tbodyCuentas", function (trsHTML) {
@@ -241,6 +237,7 @@ app.controller("cuentasCtrl", function ($scope, $http) {
     })
 })
 
+
 app.controller("etiquetasCtrl", function ($scope, $http) {
     function buscarEtiquetas() {
         $.get("/tbodyEtiquetas", function (trsHTML) {
@@ -250,15 +247,16 @@ app.controller("etiquetasCtrl", function ($scope, $http) {
 
     buscarEtiquetas()
     
-     // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = false;
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
 
     var pusher = new Pusher('bc1c723155afce8dd187', {
       cluster: 'us2'
     });
 
-     var channel = pusher.subscribe("canalEtiquetas")
+    var channel = pusher.subscribe("canalEtiquetas")
     channel.bind("eventoEtiquetas", function(data) {
+        // alert(JSON.stringify(data))
         buscarEtiquetas()
     })
     
@@ -266,8 +264,8 @@ app.controller("etiquetasCtrl", function ($scope, $http) {
         event.preventDefault()
 
         $.post("/etiqueta", {
-            id: "",
-            nombreEtiqueta: $("#txtNombre").val()
+            idEtiqueta: "",
+            nombreEtiqueta: $("#txtNombre").val(),
         })
     })
 })
@@ -290,6 +288,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
