@@ -208,7 +208,59 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
             descripcion: $("#txtDesc").val(),
         })
     })
+app.controller("notasfinancierasCtrl", function ($scope, $http) {
+    function buscarNotasFinancieras() {
+        $.get("/tbodyNotasFinancieras", function (trsHTML) {
+            $("#tbodyNotasFinancieras").html(trsHTML)
+        })
+    }
+
+    buscarNotasFinancieras()
+    
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('bc1c723155afce8dd187', {
+      cluster: 'us2'
+    });
+
+    var channel = pusher.subscribe("canalNotasFinancieras")
+    channel.bind("eventoNotasFinancieras", function(data) {
+        buscarNotasFinancieras()
+    })
+    
+    $(document).on("submit", "#frmNotaFinanciera", function (event) {
+        event.preventDefault()
+        $.post("/notafinanciera", {
+            idNota: "",
+            titulo: $("#txtTitulo").val(),
+            descripcion: $("#txtDesc").val(),
+        })
+    })
+
+    // ---------------------------
+    // NUEVA FUNCIÓN DE ELIMINACIÓN
+    // ---------------------------
+    $(document).on("click", ".btn-eliminar-nota", function () {
+        const idNota = $(this).data("id")  // asumimos que el botón tiene data-id="123"
+        
+        if (confirm("¿Seguro que quieres eliminar esta nota?")) {
+            $.ajax({
+                url: `/notafinanciera/${idNota}`,
+                type: "DELETE",
+                success: function(respuesta) {
+                    alert("Nota eliminada")
+                    buscarNotasFinancieras() // refresca la tabla
+                },
+                error: function(err) {
+                    alert("Error al eliminar la nota")
+                    console.error(err)
+                }
+            })
+        }
+    })
 })
+
 
 
 
