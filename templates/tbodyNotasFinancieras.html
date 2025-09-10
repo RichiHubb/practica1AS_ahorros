@@ -1,0 +1,9 @@
+{% for cuenta in cuentas %}
+<tr>
+    <td>{{ cuenta.idNota }}</td>
+    <td>{{ cuenta.titulo }}</td>
+    <td>{{ cuenta.descripcion }}</td>
+    <td>{{ cuenta.fechaCreacion }}</td>
+    <td><button class="btn btn-info btn-ingredientes" data-id="{{ cuenta.id_cuenta }}">Ver notas...</button></td>
+</tr>
+{% endfor %}
