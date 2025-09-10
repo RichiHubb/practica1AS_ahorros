@@ -504,15 +504,23 @@ def tbodyEtiquetas():
     return render_template("tbodyEtiquetas.html", etiquetas=registros)
 
 @app.route("/etiqueta", methods=["POST"])
+# Usar cuando solo se quiera usar CORS en rutas específicas
+# @cross_origin()
 def guardarEtiqueta():
     if not con.is_connected():
         con.reconnect()
 
-    nombreEtiqueta = request.form["nombreEtiqueta"]
+    id          = request.form["id"]
+    nombre      = request.form["nombre"]
     
     cursor = con.cursor()
-    sql = "INSERT INTO etiquetas (nombreEtiqueta) VALUES (%s,)"
-    val = (nombreEtiqueta,)
+
+    sql = """
+    INSERT INTO productos (nombreEtiqueta)
+                VALUES    (%s)
+    """
+    val = (nombre)
+    
     cursor.execute(sql, val)
     con.commit()
     con.close()
@@ -520,6 +528,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
 
     return make_response(jsonify({}))
+
 
 
 
