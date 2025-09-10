@@ -42,6 +42,20 @@ def pusherProductos():
     pusher_client.trigger("canalProductos", "eventoProductos", {"message": "Hola Mundo!"})
     return make_response(jsonify({}))
 
+def pusherNotasFinancieras():
+    import pusher
+    
+    pusher_client = pusher.Pusher(
+      app_id='2046048',
+      key='bc1c723155afce8dd187',
+      secret='57fd29b7d864a84bf88c',
+      cluster='us2',
+      ssl=True
+    )
+    
+    pusher_client.trigger("canalNotasFinancieras", "eventoNotasFinancieras", {"message": "Nueva nota!"})
+
+
 def pusherCuentas():
     import pusher
     
@@ -384,10 +398,31 @@ def tbodyNotasFinancieras():
     con.close()
     return render_template("tbodyNotasFinancieras.html", notas=registros)
 
+@app.route("/notafinanciera", methods=["POST"])
+def guardarNotaFinanciera():
+    if not con.is_connected():
+        con.reconnect()
+
+    titulo      = request.form["titulo"]
+    descripcion = request.form["descripcion"]
+    
+    cursor = con.cursor()
+    sql = "INSERT INTO notasfinancieras (titulo, descripcion) VALUES (%s, %s)"
+    val = (titulo, descripcion)
+    cursor.execute(sql, val)
+    con.commit()
+    con.close()
+
+    pusherNotasFinancieras()
+
+    return make_response(jsonify({}))
+
+
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # FIN SECCION CUENTAS
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
