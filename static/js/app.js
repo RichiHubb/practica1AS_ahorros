@@ -29,7 +29,7 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/cuentas",
         controller: "cuentasCtrl"
     })
-    .when("/cuentas", {
+    .when("/notasFinancieras", {
     templateUrl: "/notasFinancieras",
     controller: "notasfinancierasCtrl"
     })
@@ -269,6 +269,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
