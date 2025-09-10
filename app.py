@@ -431,6 +431,29 @@ def guardarNotaFinanciera():
 
     return make_response(jsonify({}))
 
+@app.route("/nota/eliminar", methods=["POST"])
+def eliminarNota():
+    if not con.is_connected():
+        con.reconnect()
+
+    idNota = request.form.get("idNota")
+    respuesta = {}
+
+    try:
+        cursor = con.cursor()
+        sql = "DELETE FROM notasfinancieras WHERE idNota = %s"
+        cursor.execute(sql, (idNota,))
+        con.commit()
+        respuesta["success"] = True
+    except Exception as e:
+        respuesta["success"] = False
+        respuesta["error"] = str(e)
+    finally:
+        con.close()
+
+    return jsonify(respuesta)
+
+
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # FIN SECCION CUENTAS
@@ -488,6 +511,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
     
     return make_response(jsonify({}))
+
 
 
 
