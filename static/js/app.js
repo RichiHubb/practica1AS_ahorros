@@ -269,7 +269,7 @@ app.controller("etiquetasCtrl", function ($scope, $http) {
 
         $.post("/etiqueta", {
             id: "",
-            nombre: $("#txtNombre").val(),
+            nombre: $("#txtNombreEtiqueta").val(),
         })
     })
 })
@@ -292,6 +292,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
