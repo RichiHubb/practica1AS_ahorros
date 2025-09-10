@@ -173,6 +173,51 @@ app.controller("decoracionesCtrl", function ($scope, $http) {
     })
 })
 
+app.controller("notasfinancierasCtrl", function ($scope, $http) {
+    function buscarNotasFinancieras() {
+        $.get("/tbodyNotasFinancieras", function (trsHTML) {
+            $("#tbodyNotasFinancieras").html(trsHTML)
+        })
+    }
+
+    buscarNotasFinancieras()
+    
+     // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('bc1c723155afce8dd187', {
+      cluster: 'us2'
+    });
+
+     var channel = pusher.subscribe("canalProductos")
+    channel.bind("eventoProductos", function(data) {
+        // alert(JSON.stringify(data))
+        buscarNotasFinancieros()
+    })
+    
+    $(document).on("submit", "#frmNotaFinanciera", function (event) {
+        event.preventDefault()
+
+        $.post("/notafinanciera", {
+            idNota: "",
+            titulo: $("#txtTitulo").val(),
+            descripcion: $("#txtDescripcion").val(),
+        })
+    })
+
+    $(document).on("click", ".btn-ingredientes", function (event) {
+        const id = $(this).data("id")
+
+        $.get(`/productos/ingredientes/${id}`, function (html) {
+            modal(html, "Ingredientes", [
+                {html: "Aceptar", class: "btn btn-secondary", fun: function (event) {
+                    closeModal()
+                }}
+            ])
+        })
+    })
+})
+
 app.controller("cuentasCtrl", function ($scope, $http) {
     function buscarCuentas() {
         $.get("/tbodyCuentas", function (trsHTML) {
@@ -224,5 +269,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
