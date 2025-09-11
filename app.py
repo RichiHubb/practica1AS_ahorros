@@ -462,6 +462,55 @@ def guardarNotaFinanciera():
 
 
 
+@app.route("/movimientosEtiquetas")
+def movimientosEtiquetas():
+    return render_template("movimientosetiquetas.html")
+
+@app.route("/tbodyMovimientosEtiquetas")
+def tbodyMovimientosetiquetas():
+    if not con.is_connected():
+        con.reconnect()
+
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT ID_MovimientoEtiqueta,
+           ID_Movimiento,
+           ID_Etiqueta
+
+    FROM movimientosEtiquetas
+
+    ORDER BY idNota DESC
+
+    LIMIT 10 OFFSET 0
+    """
+
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+
+    con.close()
+    return render_template("tbodyMovimientosEtiquetas.html", movimientosetiquetas=registros)
+
+@app.route("/movimientoetiqueta", methods=["POST"])
+def guardarMovimientoEtiqueta():
+    if not con.is_connected():
+        con.reconnect()
+
+   idMovimientoEtiqueta     = request.form["idMovimientoEtiqueta"]
+   idMovimiento = request.form["idMovimiento"]
+   idEtiqueta  = request.form["idEtiqueta"]
+
+    cursor = con.cursor()
+    sql = "INSERT INTO movimientosetiquetas (idMovimientoEtiqueta, idMovimiento, idEtiqueta) VALUES (%s, %s)"
+    val = (idMovimientoEtiqueta, idMovimiento, idEtiqueta)
+    cursor.execute(sql, val)
+    con.commit()
+    con.close()
+
+    pusherMovimientosEtiquetas()
+
+    return make_response(jsonify({}))
+
+
 
 
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -583,6 +632,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
     
     return make_response(jsonify({}))
+
 
 
 
