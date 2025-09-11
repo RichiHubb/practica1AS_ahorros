@@ -1,7 +1,30 @@
-{% for movimientoetiqueta in movimientosetiquetas %}
-<tr>
-    <td>{{ movimientoetiqueta.idMovimientoEtiqueta }}</td>
-    <td>{{ movimientoetiqueta.idMovimiento }}</td>
-    <td>{{ movimientoetiqueta.idEtiqueta }}</td>
-</tr>
-{% endfor %}
+<form id="frmMovimientoEtiqueta" method="post">
+    <div class="mb-1">
+        <label>ID Movimiento Etiqueta</label>
+        <input type="text" class="form-control" id="txtIDMovimientoEtiqueta" name="txtIDMovimientoEtiqueta">
+    </div>
+    <div class="mb-1">
+        <label>ID Movimiento</label>
+        <input type="text" class="form-control" id="txtIDMovimiento" name="txtIDMovimiento">
+    </div>
+    <div class="mb-1">
+        <label>ID Etiqueta</label>
+        <input type="text" class="form-control" id="txtIDEtiqueta" name="txtIDEtiqueta">
+    </div>
+    <div class="mb-1 text-end">
+        <button class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead class="table-active">
+            <tr>
+                <th>Id</th>
+                <th>ID Movimiento Etiqueta</th>
+                <th>ID Movimiento</th>
+                <th>ID Etiqueta</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyMovimientosetiquetas"></tbody>
+    </table>
+</div>
