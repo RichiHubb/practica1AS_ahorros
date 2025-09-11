@@ -243,28 +243,25 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
 app.controller("movimientosetiquetasCtrl", function ($scope, $http) {
     function buscarMovimientosEtiquetas() {
         $.get("/tbodyMovimientosEtiquetas", function (trsHTML) {
-            $("#tbodyMovimientosEtiquetas").html(trsHTML)
-        })
+            $("#tbodyMovimientosEtiquetas").html(trsHTML);
+        });
     }
 
-    buscarMovimientosEtiquetas()
-    
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+    buscarMovimientosEtiquetas();
 
-    var pusher = new Pusher('bc1c723155afce8dd187', { cluster: 'us2' });
+    var pusher = new Pusher("bc1c723155afce8dd187", { cluster: "us2" });
     var channel = pusher.subscribe("canalMovimientosEtiquetas");
-    channel.bind("eventoMovimientosEtiquetas", function(data) {
-        buscarMovimientosEtiquetas()
+    channel.bind("eventoMovimientosEtiquetas", function () {
+        buscarMovimientosEtiquetas();
     });
-    
-    $(document).on("submit", "#frmNotaFinanciera", function (event) {
-        event.preventDefault()
+
+    $(document).on("submit", "#frmMovimientoEtiqueta", function (event) {
+        event.preventDefault();
         $.post("/movimientoetiqueta", {
-            idMovimientoEtiqueta:"",
+            idMovimientoEtiqueta: "",
             idMovimiento: $("#txtIDMovimiento").val(),
-            idEtiqueta: $("#txtIDEtiqueta").val(),
-        })
+            idEtiqueta: $("#txtIDEtiqueta").val()
+        });
     });
 });
 
@@ -352,6 +349,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
