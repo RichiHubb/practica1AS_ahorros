@@ -37,6 +37,10 @@ app.config(function ($routeProvider, $locationProvider) {
     templateUrl: "/movimientos",
     controller: "movimientosCtrl"
     })
+    .when("/movimientosEtiquetas", {
+    templateUrl: "/movimientosEtiquetas",
+    controller: "movimientosEtiquetasCtrl"
+    })
     .when("/notasFinancieras", {
     templateUrl: "/notasFinancieras",
     controller: "notasfinancierasCtrl"
@@ -236,6 +240,36 @@ app.controller("notasfinancierasCtrl", function ($scope, $http) {
     });
 });
 
+app.controller("movimientosetiquetasCtrl", function ($scope, $http) {
+    function buscarMovimientosEtiquetas() {
+        $.get("/tbodyMovimientosEtiquetas", function (trsHTML) {
+            $("#tbodyMovimientosEtiquetas").html(trsHTML)
+        })
+    }
+
+    buscarMovimientosEtiquetas()
+    
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('bc1c723155afce8dd187', { cluster: 'us2' });
+    var channel = pusher.subscribe("canalMovimientosEtiquetas");
+    channel.bind("eventoMovimientosEtiquetas", function(data) {
+        buscarMovimientosEtiquetas()
+    });
+    
+    $(document).on("submit", "#frmNotaFinanciera", function (event) {
+        event.preventDefault()
+        $.post("/movimientoetiqueta", {
+            id: "",
+            idMovimientoEtiqueta: $("#txtIDMovimientoEtiqueta").val(),
+            idMovimiento: $("#txtIDMovimiento").val(),
+            idEtiqueta: $("#txtIDEtiqueta").val(),
+        })
+    });
+});
+
+
 app.controller("cuentasCtrl", function ($scope, $http) {
     function buscarCuentas() {
         $.get("/tbodyCuentas", function (trsHTML) {
@@ -319,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
