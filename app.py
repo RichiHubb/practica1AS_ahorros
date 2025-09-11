@@ -69,6 +69,20 @@ def pusherNotasFinancieras():
     
     pusher_client.trigger("canalNotasFinancieras", "eventoNotasFinancieras", {"message": "Nueva nota!"})
 
+def pusherMovimientosEtiquetas():
+    import pusher
+    
+    pusher_client = pusher.Pusher(
+      app_id='2046048',
+      key='bc1c723155afce8dd187',
+      secret='57fd29b7d864a84bf88c',
+      cluster='us2',
+      ssl=True
+    )
+    
+    pusher_client.trigger("canalMovimientosEtiquetas", "eventoMovimientosEtiquetas", {"message": "Nueva Movimentos Etiquetas!"})
+
+
 
 def pusherCuentas():
     import pusher
@@ -569,6 +583,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
     
     return make_response(jsonify({}))
+
 
 
 
