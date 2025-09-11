@@ -90,7 +90,7 @@ app.controller("appCtrl", function ($scope, $http) {
         $.post("iniciarSesion", $(this).serialize(), function (respuesta) {
             if (respuesta.length) {
                 alert("Iniciaste Sesión")
-                window.location = "/#/productos"
+                window.location = "/#/cuentas"
 
                 return
             }
@@ -319,6 +319,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
