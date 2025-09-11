@@ -156,7 +156,7 @@ app.controller("movimientosCtrl", function ($scope, $http) {
     buscarMovimientos()
 
     Pusher.logToConsole = true
-    var pusher = new Pusher('TU_KEY_PUSHER', { cluster: 'us2' })
+    var pusher = new Pusher('bc1c723155afce8dd187', { cluster: 'us2' })
     var channel = pusher.subscribe("canalMovimientos")
     channel.bind("eventoMovimientos", function(data) {
         buscarMovimientos()
@@ -319,6 +319,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
