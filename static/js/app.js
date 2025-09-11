@@ -146,6 +146,33 @@ app.controller("productosCtrl", function ($scope, $http) {
 })
 
 
+app.controller("movimientosCtrl", function ($scope, $http) {
+    function buscarMovimientos() {
+        $.get("/tbodyMovimientos", function (trsHTML) {
+            $("#tbodyMovimientos").html(trsHTML)
+        })
+    }
+
+    buscarMovimientos()
+
+    Pusher.logToConsole = true
+    var pusher = new Pusher('TU_KEY_PUSHER', { cluster: 'us2' })
+    var channel = pusher.subscribe("canalMovimientos")
+    channel.bind("eventoMovimientos", function(data) {
+        buscarMovimientos()
+    })
+
+    $(document).on("submit", "#frmMovimiento", function (event) {
+        event.preventDefault()
+        $.post("/movimiento", {
+            id: "",
+            descripcion: $("#txtDescripcion").val(),
+            monto: $("#txtMonto").val(),
+            fecha: $("#txtFecha").val()
+        })
+    })
+})
+
 
 app.controller("decoracionesCtrl", function ($scope, $http) {
     function buscarDecoraciones() {
@@ -292,6 +319,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
