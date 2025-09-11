@@ -39,7 +39,7 @@ app.config(function ($routeProvider, $locationProvider) {
     })
     .when("/movimientosEtiquetas", {
     templateUrl: "/movimientosEtiquetas",
-    controller: "movimientosEtiquetasCtrl"
+    controller: "movimientosetiquetasCtrl"
     })
     .when("/notasFinancieras", {
     templateUrl: "/notasFinancieras",
@@ -261,8 +261,7 @@ app.controller("movimientosetiquetasCtrl", function ($scope, $http) {
     $(document).on("submit", "#frmNotaFinanciera", function (event) {
         event.preventDefault()
         $.post("/movimientoetiqueta", {
-            id: "",
-            idMovimientoEtiqueta: $("#txtIDMovimientoEtiqueta").val(),
+            idMovimientoEtiqueta:"",
             idMovimiento: $("#txtIDMovimiento").val(),
             idEtiqueta: $("#txtIDEtiqueta").val(),
         })
@@ -353,6 +352,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
