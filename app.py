@@ -466,42 +466,55 @@ def guardarNotaFinanciera():
 def movimientosEtiquetas():
     return render_template("movimientosetiquetas.html")
 
+
 @app.route("/tbodyMovimientosEtiquetas")
 def tbodyMovimientosetiquetas():
     if not con.is_connected():
         con.reconnect()
 
     cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT ID_MovimientoEtiqueta,
-           ID_Movimiento,
-           ID_Etiqueta
-
-    FROM movimientosEtiquetas
-
-    ORDER BY idNota DESC
-
+    sql = """
+    SELECT idMovimientoEtiqueta,
+           idMovimiento,
+           idEtiqueta
+    FROM movimientosetiquetas
+    ORDER BY idMovimientoEtiqueta DESC
     LIMIT 10 OFFSET 0
     """
 
     cursor.execute(sql)
     registros = cursor.fetchall()
-
     con.close()
+
     return render_template("tbodyMovimientosEtiquetas.html", movimientosetiquetas=registros)
+
 
 @app.route("/movimientoetiqueta", methods=["POST"])
 def guardarMovimientoEtiqueta():
     if not con.is_connected():
         con.reconnect()
 
-   idMovimientoEtiqueta     = request.form["idMovimientoEtiqueta"]
-   idMovimiento = request.form["idMovimiento"]
-   idEtiqueta  = request.form["idEtiqueta"]
+    idMovimientoEtiqueta = request.form["idMovimientoEtiqueta"]
+    idMovimiento = request.form["idMovimiento"]
+    idEtiqueta = request.form["idEtiqueta"]
 
     cursor = con.cursor()
-    sql = "INSERT INTO movimientosetiquetas (idMovimientoEtiqueta, idMovimiento, idEtiqueta) VALUES (%s, %s)"
-    val = (idMovimientoEtiqueta, idMovimiento, idEtiqueta)
+
+    # Si mandas idMovimientoEtiqueta manualmente:
+    if idMovimientoEtiqueta:
+        sql = """
+        INSERT INTO movimientosetiquetas (idMovimientoEtiqueta, idMovimiento, idEtiqueta)
+        VALUES (%s, %s, %s)
+        """
+        val = (idMovimientoEtiqueta, idMovimiento, idEtiqueta)
+    else:
+        # Si la columna idMovimientoEtiqueta es AUTO_INCREMENT
+        sql = """
+        INSERT INTO movimientosetiquetas (idMovimiento, idEtiqueta)
+        VALUES (%s, %s)
+        """
+        val = (idMovimiento, idEtiqueta)
+
     cursor.execute(sql, val)
     con.commit()
     con.close()
@@ -509,6 +522,7 @@ def guardarMovimientoEtiqueta():
     pusherMovimientosEtiquetas()
 
     return make_response(jsonify({}))
+
 
 
 
@@ -632,6 +646,7 @@ def guardarEtiqueta():
     pusherEtiquetas()
     
     return make_response(jsonify({}))
+
 
 
 
