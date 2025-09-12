@@ -494,26 +494,17 @@ def guardarMovimientoEtiqueta():
     if not con.is_connected():
         con.reconnect()
 
-    idMovimientoEtiqueta = request.form["idMovimientoEtiqueta"]
     idMovimiento = request.form["idMovimiento"]
     idEtiqueta = request.form["idEtiqueta"]
 
     cursor = con.cursor()
 
-    # Si mandas idMovimientoEtiqueta manualmente:
-    if idMovimientoEtiqueta:
-        sql = """
-        INSERT INTO movimientosetiquetas (idMovimientoEtiqueta, idMovimiento, idEtiqueta)
-        VALUES (%s, %s, %s)
-        """
-        val = (idMovimientoEtiqueta, idMovimiento, idEtiqueta)
-    else:
         # Si la columna idMovimientoEtiqueta es AUTO_INCREMENT
-        sql = """
-        INSERT INTO movimientosetiquetas (idMovimiento, idEtiqueta)
-        VALUES (%s, %s)
-        """
-        val = (idMovimiento, idEtiqueta)
+    sql = """
+    INSERT INTO movimientosetiquetas (idMovimiento, idEtiqueta)
+    VALUES (%s, %s)
+    """
+    val = (idMovimiento, idEtiqueta)
 
     cursor.execute(sql, val)
     con.commit()
