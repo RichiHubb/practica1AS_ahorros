@@ -34,16 +34,16 @@ app.config(function ($routeProvider, $locationProvider) {
         controller: "cuentasCtrl"
     })
     .when("/movimientos", {
-    templateUrl: "/movimientos",
-    controller: "movimientosCtrl"
+        templateUrl: "/movimientos",
+        controller: "movimientosCtrl"
     })
    .when("/movimientosEtiquetas", { 
-    templateUrl: "/movimientosEtiquetas", 
-    controller: "movimientosetiquetasCtrl" 
+        templateUrl: "/movimientosEtiquetas", 
+        controller: "movimientosetiquetasCtrl" 
     })
     .when("/notasFinancieras", {
-    templateUrl: "/notasFinancieras",
-    controller: "notasfinancierasCtrl"
+        templateUrl: "/notasFinancieras",
+        controller: "notasfinancierasCtrl"
     })
     .otherwise({
         redirectTo: "/"
@@ -348,6 +348,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
