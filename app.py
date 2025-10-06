@@ -8,8 +8,7 @@ from flask import Flask
 
 from flask import render_template
 from flask import request
-from flask import jsonify, make_response, jsonify, make_response, redirect, url_for, session
-
+from flask import jsonify, make_response
 
 import mysql.connector
 
@@ -27,22 +26,6 @@ con = mysql.connector.connect(
 
 app = Flask(__name__)
 CORS(app)
-app.secret_key = "UTbros-"
-
-@app.before_request
-def proteger_rutas():
-    # Lista de rutas que sí se pueden ver sin iniciar sesión
-    rutas_publicas = ['app2', 'iniciarSesion', 'static']  # login, recursos estáticos, etc.
-
-    # Si intenta acceder a algo que no sea público y no tiene sesión → redirige al login
-    if "usuario" not in session and request.endpoint not in rutas_publicas:
-        return redirect(url_for("app2"))
-
-@app.route("/cerrarSesion")
-def cerrarSesion():
-    session.pop("usuario", None)
-    return redirect(url_for("app2"))
-
 
 def pusherProductos():
     import pusher
@@ -151,32 +134,30 @@ def app2():
     # return "<h5>Hola, soy la view app</h5>"
 
 @app.route("/iniciarSesion", methods=["POST"])
+# Usar cuando solo se quiera usar CORS en rutas específicas
+# @cross_origin()
 def iniciarSesion():
     if not con.is_connected():
         con.reconnect()
 
-    usuario = request.form["txtUsuario"]
+    usuario    = request.form["txtUsuario"]
     contrasena = request.form["txtContrasena"]
 
     cursor = con.cursor(dictionary=True)
-    sql = """
-    SELECT id, nombre
+    sql    = """
+    SELECT id
     FROM usuarios
+
     WHERE nombre = %s
     AND contrasena = %s
     """
-    val = (usuario, contrasena)
+    val    = (usuario, contrasena)
 
     cursor.execute(sql, val)
     registros = cursor.fetchall()
     con.close()
 
-    if len(registros) > 0:
-        session["usuario"] = registros[0]["nombre"]
-        return redirect(url_for("productos"))  # o cualquier página principal
-    else:
-        return render_template("login.html", error="Usuario o contraseña incorrectos")
-
+    return make_response(jsonify(registros))
 
 @app.route("/productos")
 def productos():
@@ -656,8 +637,6 @@ def guardarEtiqueta():
     pusherEtiquetas()
     
     return make_response(jsonify({}))
-
-
 
 
 
