@@ -104,6 +104,33 @@
             <a class="nav-link" href="#/movimientosEtiquetas">Movimientos Etiquetas</a>
         </li>
 
+        <div ng-controller="MainCtrl">
+    <!-- Si no hay usuario -->
+    <div ng-if="!usuario">
+        <h2>Inicia sesión</h2>
+        <input type="text" ng-model="nombre" placeholder="Usuario">
+        <select ng-model="tipo">
+            <option value="1">Administrador</option>
+            <option value="2">Usuario normal</option>
+        </select>
+        <button ng-click="login()">Entrar</button>
+    </div>
+
+    <!-- Solo Tipo_Usuario = 1 -->
+    <div ng-if="usuario && usuario.Tipo_Usuario == 1">
+        <h2>Bienvenido, {{usuario.Nombre}}</h2>
+        <p>Contenido para administradores</p>
+        <button ng-click="logout()">Cerrar sesión</button>
+    </div>
+
+    <!-- Usuario sin permiso -->
+    <div ng-if="usuario && usuario.Tipo_Usuario != 1">
+        <h2>Acceso denegado</h2>
+        <button ng-click="logout()">Cerrar sesión</button>
+    </div>
+</div>
+
+
 
 
     </ul>
@@ -125,6 +152,7 @@
     </div>
 </body>
 </html>
+
 
 
 
