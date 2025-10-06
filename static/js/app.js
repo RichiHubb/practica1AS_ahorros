@@ -54,13 +54,8 @@ app.config(function ($routeProvider, $locationProvider) {
         redirectTo: "/"
     })
 })
-app.run(["$rootScope", "$location", "$timeout", "$http", function($rootScope, $location, $timeout, $http) {
-    // Obtener usuario actual desde Flask
-    $http.get("/usuarioActual").then(function(respuesta) {
-        $rootScope.usuario = respuesta.data; // { Nombre: "Juan", Tipo_Usuario: 1 } o null
-    }, function() {
-        $rootScope.usuario = null;
-    });
+app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, $timeout) {
+    
 
     function actualizarFechaHora() {
         lxFechaHora = DateTime
@@ -360,6 +355,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
