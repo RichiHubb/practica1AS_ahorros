@@ -15,7 +15,7 @@ angular.module('angularjsApp', [])
   };
 });
 
-const app = angular.module("angularjsApp", ["ngRoute"])
+
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix("")
 
@@ -355,6 +355,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
