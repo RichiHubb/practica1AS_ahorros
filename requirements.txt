@@ -4,7 +4,5 @@ mysql-connector-python
 pytz
 Flask-Cors
 pusher
-session
-jsonify
-session
+
 
