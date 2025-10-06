@@ -8,14 +8,9 @@ function activeMenuOption(href) {
     .attr("aria-current", "page")
 }
 
-angular.module('angularjsApp', [])
-.controller('MainCtrl', function($scope) {
-  $scope.usuario = {
-    Tipo_Usuario: 1
-  };
-});
 
 
+const app = angular.module("angularjsApp", ["ngRoute"])
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix("")
 
