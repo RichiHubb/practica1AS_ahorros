@@ -8,6 +8,27 @@ function activeMenuOption(href) {
     .attr("aria-current", "page")
 }
 
+angular.module('angularjsApp', [])
+.controller('MainCtrl', function($scope) {
+    $scope.usuario = null;
+
+    $scope.login = function() {
+        if ($scope.nombre && $scope.tipo) {
+            $scope.usuario = {
+                Nombre: $scope.nombre,
+                Tipo_Usuario: parseInt($scope.tipo)
+            };
+        }
+    };
+
+    $scope.logout = function() {
+        $scope.usuario = null;
+        $scope.nombre = '';
+        $scope.tipo = '';
+    };
+});
+
+
 
 
 const app = angular.module("angularjsApp", ["ngRoute"])
@@ -350,6 +371,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     activeMenuOption(location.hash)
 })
+
 
 
 
